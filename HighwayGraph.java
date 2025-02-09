@@ -222,5 +222,105 @@ public class HighwayGraph
         System.out.println(g);
 
 	// ADD CODE HERE TO COMPLETE LAB TASKS
+    int northmost = 0;
+    int southmost = 0;
+    int eastmost = 0;
+    int westmost = 0;
+    int longest = 0;
+    int shortest = 0;
+
+    for (int check = 1; check < g.vertices.length; check++){
+        if (g.vertices[check].point.lat > g.vertices[northmost].point.lat ){
+            northmost = check;
+        }
+        if (g.vertices[check].point.lat < g.vertices[southmost].point.lat){
+            southmost = check;
+        }
+        if (g.vertices[check].point.lng > g.vertices[eastmost].point.lng){
+            eastmost = check;
+        }
+        if (g.vertices[check].point.lng < g.vertices[westmost].point.lng){
+            westmost = check;
+        }
+        if (g.vertices[check].label.length() < (g.vertices[shortest].label.length())){
+            shortest = check;
+        }
+        if (g.vertices[check].label.length() > (g.vertices[longest].label.length())){
+            longest = check;
+        }
+    }
+
+    System.out.println("Here are the superlatives of the vertices:");
+    System.out.println("Northmost:");
+    System.out.println(g.vertices[northmost]);
+    System.out.println("Southmost:");
+    System.out.println(g.vertices[southmost]);
+    System.out.println("Eastmost:");
+    System.out.println(g.vertices[eastmost]);
+    System.out.println("Westmost:");
+    System.out.println(g.vertices[westmost]);
+    System.out.println("Longest:");
+    System.out.println(g.vertices[longest]);
+    System.out.println("Shortest:");
+    System.out.println(g.vertices[shortest]);
+    System.out.println("\n\n\n");
+
+    //Adding the edge extremes code
+    int count = 0;
+    double totallength = 0.0;
+    Edge longestLabel = null;
+    Edge longestEdge = null;
+    Edge shortestLabel = null;
+    Edge shortestEdge = null;
+
+    for (int check = 0; check < g.vertices.length - 1; check++){
+        Edge finger = g.vertices[check].head;
+        while(finger != null){
+            //check if it's null
+            if (longestLabel == null){
+                longestLabel = finger;
+                longestEdge = finger;
+                shortestEdge = finger;
+                shortestLabel= finger;
+            }
+            if (check < finger.dest){
+                totallength += finger.length;
+                //now check the leaders
+                if(finger.label != null){
+                if (finger.label.length() > longestLabel.label.length()){
+                    longestLabel = finger;
+                }
+                else if (finger.label.length() < shortestLabel.label.length()){
+                    shortestLabel = finger;
+                }
+            }
+            if (finger.length > longestEdge.length){
+                longestEdge = finger;
+            }
+            else if (finger.length < shortestEdge.length){
+                shortestEdge = finger;
+            }
+            count++;
+            }
+            finger = finger.next;
+            }
+        }
+
+    System.out.println("Here are the superlatives of the Edges:");
+    System.out.println("Longest Edge:");
+    System.out.println(longestEdge);
+    System.out.println("Shortest Edge:");
+    System.out.println(shortestEdge);
+    System.out.println("Longest Label:");
+    System.out.println(longestLabel);
+    System.out.println("Shortest Label:");
+    System.out.println(shortestLabel);
+    System.out.println("There are " + g.numEdges + " edges in the graph!");
+    System.out.println("We checked " + " " + count + " edges!");
+    System.out.println("The total length of all edges is: " + totallength + " miles!");
+
+
+
+
     }
 }
